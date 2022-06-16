@@ -1,23 +1,19 @@
 module MyEnumerable
   def all?
-    each do |item|
-      return false unless yield(item)
-    end
-    true
+    always_true = true
+    each { |block_is_not_true| always_true = false unless yield block_is_not_true }
+    always_true
   end
 
   def any?
-    each do |item|
-      return true if yield(item)
-    end
-    false
+    always_false = false
+    each { |block_is_true| always_false = true if yield block_is_true }
+    always_false
   end
 
   def filter
-    filtered_items = []
-    each do |item|
-      filtered_items.push(item) if yield(item)
-    end
-    filtered_items
+    always_array = []
+    each { |block_is_true| always_array.push(block_is_true) if yield block_is_true }
+    always_array
   end
 end
